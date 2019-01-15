@@ -43,7 +43,23 @@ let audioBehavior = (file) => {
     });
 };
 
+let videoBehavior = (file) => {
+    var video = new Vid(file);
+    video.loadFileContent().then(()=>{
+        defaultBehavior(video);
+        dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).prepend(video.DOMElement);
+    });
+};
+
+let pdfBehavior = (file) => {
+    var pdf = new Pdf(file);
+    pdf.loadFileContent().then(()=>{
+        defaultBehavior(pdf);
+        dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).prepend(pdf.DOMElement);
+    });
+};
+
 dropArea.subscribe("image", imageBehavior);
 dropArea.subscribe("audio", audioBehavior);
-/*dropArea.subscribe("video", );
-dropArea.subscribe("text", );*/
+dropArea.subscribe("video", videoBehavior);
+dropArea.subscribe("pdf", pdfBehavior);

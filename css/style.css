@@ -78,6 +78,10 @@ body{
     width: 15%;
 }
 
+#dropArea .file .info video, #dropArea .file .info iframe{
+    width: 100%;
+}
+
 #dropArea .file audio{
     width: 100%;
     margin-top: 10px;
