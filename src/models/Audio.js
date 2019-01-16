@@ -4,4 +4,8 @@ class Sonido extends MultimediaElement{
         element.controls = true;
         super(file,type,element);
     }
+
+    save(){
+        super.save("Audio.php");
+    }
 }

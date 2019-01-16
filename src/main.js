@@ -1,9 +1,6 @@
 let dropArea = new DropArea("#dropArea");
 let fileCounter = 0;
-
-function BtoMB(B){
-    return Math.round( (B/(1024*1024)) * 100 ) / 100;
-}
+const URLServidor = "http://localhost/usbcali/MMDBServer/";
 
 function defaultBehavior(el){
     let da = dropArea.DOMElement;
@@ -20,7 +17,7 @@ function defaultBehavior(el){
         <div class="info">
             <div>
                 <span class="type">${el.type}</span> 
-                <span class="size">${BtoMB(el.file.size)}MB</span>
+                <span class="size">${el.sizeToMB()}MB</span>
             </div>
         </div>
     </div>
@@ -31,7 +28,13 @@ let imageBehavior = (file) => {
     var img = new Imagen(file);
     img.loadFileContent().then(()=>{
         defaultBehavior(img);
+
+        let saveBtn = document.createElement("button");
+        saveBtn.innerHTML = "Guardar en la DBMM";
+        saveBtn.onclick = () => { img.save(); };
+
         dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).prepend(img.DOMElement);
+        dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).append(saveBtn);
     });
 };
 
@@ -39,7 +42,13 @@ let audioBehavior = (file) => {
     var audio = new Sonido(file);
     audio.loadFileContent().then(()=>{
         defaultBehavior(audio);
+
+        let saveBtn = document.createElement("button");
+        saveBtn.innerHTML = "Guardar en la DBMM";
+        saveBtn.onclick = () => { audio.save(); };
+
         dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).prepend(audio.DOMElement);
+        dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).append(saveBtn);
     });
 };
 
@@ -63,3 +72,53 @@ dropArea.subscribe("image", imageBehavior);
 dropArea.subscribe("audio", audioBehavior);
 dropArea.subscribe("video", videoBehavior);
 dropArea.subscribe("pdf", pdfBehavior);
+
+/**
+    SELECT AREA
+*/
+
+let btnSAI = document.querySelector("#selectAllImages");
+btnSAI.onclick = () => {
+    selectAll("Imagen.php",document.createElement("img"));
+}
+
+let btnSAA = document.querySelector("#selectAllAudios");
+btnSAA.onclick = () => {
+    let tag = document.createElement("audio");
+    tag.controls = true;
+    selectAll("Audio.php",tag);
+}
+
+function selectAll(resource,tag){
+    var options = { 
+        method: 'POST',
+        mode: 'cors',
+        cache: 'default',
+        headers: {
+            'Access-Control-Allow-Origin':'*'
+        }
+    };
+    let url = `${URLServidor}${resource}?exec=select`;console.log(url);
+    fetch(url,options)
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(json) {
+        json.forEach(el => {
+            document.querySelector("#selectArea").innerHTML +=`
+            <div class="file">
+                <span class="name">${el.name}</span> 
+                <div class="info">
+                    <div>
+                        <span class="type">${el.type}</span> 
+                        <span class="size">${el.size}MB</span>
+                    </div>
+                </div>
+            </div>
+            `; 
+            tag.src = el.file;
+            document.querySelector("#selectArea .info").prepend(tag);
+        });
+        
+    });
+}

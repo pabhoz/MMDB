@@ -72,6 +72,10 @@ class MultimediaElement{
           });
     }
 
+    sizeToMB(){
+        return Math.round( (this.file.size/(1024*1024)) * 100 ) / 100;
+    }
+
     _readFileAsDataURL(callback){
         var freader = new FileReader();
     
@@ -80,6 +84,75 @@ class MultimediaElement{
         };
 
         freader.readAsDataURL(this.file);
+    }
+
+    save(resource = ""){
+        let data = {
+            id: null,
+            name: this.file.name,
+            type: this.type,
+            size: this.sizeToMB(),
+            file: this.DOMElement.src
+        };
+        var params = new FormData();
+        for (const key in data) {
+            params.append(key,data[key]);
+        }
+        var options = { 
+            method: 'POST',
+            mode: 'cors',
+            cache: 'default',
+            headers: {
+                'Access-Control-Allow-Origin':'*'
+            },
+            body: params
+        };
+        let url = `${URLServidor}${resource}?exec=insert`; console.log(url); 
+        fetch(url,options)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(json) {
+            if(json.status){
+                alert(`Archivo guardado con éxito`);
+            }else{
+                alert(json.msg);
+            }
+        });
+    }
+
+    static select(resource = "",id = null,callback){
+        let data = {
+            id: id
+        };
+        var params = new FormData();
+        for (const key in data) {
+            params.append(key,data[key]);
+        }
+        var options = { 
+            method: 'POST',
+            mode: 'cors',
+            cache: 'default',
+            headers: {
+                'Access-Control-Allow-Origin':'*'
+            },
+            body: params
+        };
+        let url = `${URLServidor}${resource}?exec=select`;console.log(url);
+        fetch(url,options)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(json) {
+            console.log(json);
+            callback(json);
+        });
+    }
+
+    _dataToURLParams(data){
+       return Object.keys(data).map(function(k) {
+            return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+        }).join('&');
     }
 
 }
