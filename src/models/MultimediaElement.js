@@ -110,6 +110,7 @@ class MultimediaElement{
         let url = `${URLServidor}${resource}?exec=insert`; console.log(url); 
         fetch(url,options)
         .then(function(response) {
+            //console.log(response.text());
             return response.json();
         })
         .then(function(json) {
@@ -144,19 +145,22 @@ class MultimediaElement{
         })
         .then(function(json) {
             json.forEach(el => {
-                document.querySelector("#selectArea").innerHTML +=`
-                <div class="file" id="${elId}${el.id}">
-                    <span class="name">${el.name}</span> 
-                    <div class="info">
-                        <div>
-                            <span class="type">${el.type}</span> 
-                            <span class="size">${el.size}MB</span>
+                if(document.querySelector(`#selectArea #${elId}${el.id}`) == null){
+                    document.querySelector("#selectArea").innerHTML +=`
+                    <div class="file" id="${elId}${el.id}">
+                        <span class="name">${el.name}</span> 
+                        <div class="info">
+                            <div>
+                                <span class="type">${el.type}</span> 
+                                <span class="size">${el.size}MB</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                `; 
-                tag.src = el.file;
-                document.querySelector(`#selectArea #${elId}${el.id} .info`).prepend(tag);
+                    `; 
+                    tag.src = el.file;
+                    document.querySelector(`#selectArea #${elId}${el.id} .info`).prepend(tag);
+                    document.querySelector("#selectArea").classList.add("multimedia");
+                }
             });
             
         });

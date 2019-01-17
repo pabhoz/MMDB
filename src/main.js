@@ -56,7 +56,13 @@ let videoBehavior = (file) => {
     var video = new Vid(file);
     video.loadFileContent().then(()=>{
         defaultBehavior(video);
+
+        let saveBtn = document.createElement("button");
+        saveBtn.innerHTML = "Guardar en la DBMM";
+        saveBtn.onclick = () => { video.save(); };
+
         dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).prepend(video.DOMElement);
+        dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).append(saveBtn);
     });
 };
 
@@ -83,6 +89,9 @@ function select(sayWhat) {
             break;
         case "audio":
             Sonido.select();
+            break;
+        case "video":
+            Vid.select();
             break;
     }
 }
