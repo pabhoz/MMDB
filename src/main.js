@@ -76,49 +76,15 @@ dropArea.subscribe("pdf", pdfBehavior);
 /**
     SELECT AREA
 */
-
-let btnSAI = document.querySelector("#selectAllImages");
-btnSAI.onclick = () => {
-    selectAll("Imagen.php",document.createElement("img"));
+function select(sayWhat) {
+    switch (sayWhat) {
+        case "img":
+            Imagen.select();
+            break;
+        case "audio":
+            Sonido.select();
+            break;
+    }
 }
 
-let btnSAA = document.querySelector("#selectAllAudios");
-btnSAA.onclick = () => {
-    let tag = document.createElement("audio");
-    tag.controls = true;
-    selectAll("Audio.php",tag);
-}
 
-function selectAll(resource,tag){
-    var options = { 
-        method: 'POST',
-        mode: 'cors',
-        cache: 'default',
-        headers: {
-            'Access-Control-Allow-Origin':'*'
-        }
-    };
-    let url = `${URLServidor}${resource}?exec=select`;console.log(url);
-    fetch(url,options)
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(json) {
-        json.forEach(el => {
-            document.querySelector("#selectArea").innerHTML +=`
-            <div class="file">
-                <span class="name">${el.name}</span> 
-                <div class="info">
-                    <div>
-                        <span class="type">${el.type}</span> 
-                        <span class="size">${el.size}MB</span>
-                    </div>
-                </div>
-            </div>
-            `; 
-            tag.src = el.file;
-            document.querySelector("#selectArea .info").prepend(tag);
-        });
-        
-    });
-}

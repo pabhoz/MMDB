@@ -8,7 +8,8 @@ class Imagen extends MultimediaElement{
         super.save("Imagen.php");
     }
 
-    static select(id,callback){
-        super.select("Imagen.php",id,callback);
+    static select(){
+        var tag = document.createElement("img");
+        super.select("Imagen.php",tag,"imagen");
     }
 }

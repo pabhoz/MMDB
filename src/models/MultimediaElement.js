@@ -121,31 +121,44 @@ class MultimediaElement{
         });
     }
 
-    static select(resource = "",id = null,callback){
-        let data = {
-            id: id
-        };
-        var params = new FormData();
-        for (const key in data) {
-            params.append(key,data[key]);
-        }
+    static select(resource,tag,elId,id=null){
         var options = { 
             method: 'POST',
             mode: 'cors',
             cache: 'default',
             headers: {
                 'Access-Control-Allow-Origin':'*'
-            },
-            body: params
+            }
         };
-        let url = `${URLServidor}${resource}?exec=select`;console.log(url);
+
+        if(id != null){
+            let data = new FormData();
+            data.append("id",id);
+            options.body = data;
+        }
+
+        let url = `${URLServidor}${resource}?exec=select`;
         fetch(url,options)
         .then(function(response) {
             return response.json();
         })
         .then(function(json) {
-            console.log(json);
-            callback(json);
+            json.forEach(el => {
+                document.querySelector("#selectArea").innerHTML +=`
+                <div class="file" id="${elId}${el.id}">
+                    <span class="name">${el.name}</span> 
+                    <div class="info">
+                        <div>
+                            <span class="type">${el.type}</span> 
+                            <span class="size">${el.size}MB</span>
+                        </div>
+                    </div>
+                </div>
+                `; 
+                tag.src = el.file;
+                document.querySelector(`#selectArea #${elId}${el.id} .info`).prepend(tag);
+            });
+            
         });
     }
 

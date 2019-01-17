@@ -8,4 +8,10 @@ class Sonido extends MultimediaElement{
     save(){
         super.save("Audio.php");
     }
+
+    static select(){
+        let tag = document.createElement("audio");
+        tag.controls = true;
+        super.select("Audio.php",tag,"audio");
+    }
 }
