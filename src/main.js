@@ -33,9 +33,13 @@ let imageBehavior = (file) => {
         saveBtn.innerHTML = "Guardar en la DBMM";
         saveBtn.onclick = () => { img.save(); };
 
+        let histogramBtn = document.createElement("button");
+        histogramBtn.innerHTML = "Ver histograma";
+        histogramBtn.onclick = () => { img.drawHistogram("#histogram"); };
+
         dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).prepend(img.DOMElement);
         dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).append(saveBtn);
-    });
+        dropArea.DOMElement.querySelector(`#file${fileCounter} .info`).append(histogramBtn);    });
 };
 
 let audioBehavior = (file) => {

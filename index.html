@@ -12,6 +12,7 @@
     <script src="src/models/Audio.js"></script>
     <script src="src/models/Video.js"></script>
     <script src="src/models/Pdf.js"></script>
+    <script src="./node_modules/chart.js/dist/Chart.js"></script>
 </head>
 <body>
     <div id="app">
@@ -25,8 +26,13 @@
                     <button onclick="select('img')">Mostrar imágenes de la DB</button>
                     <button onclick="select('audio')">Mostrar Audios de la DB</button>
                     <button onclick="select('video')">Mostrar Videos de la DB</button>
+            </div>
+        </div>
+        <div id="LaOscuridad">
+                <div id="histogramArea">
+                    <canvas id="histogram"></canvas>
                 </div>
-    </div>
+        </div>
     </div>
     <script src="src/main.js"></script>
 </body>

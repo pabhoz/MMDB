@@ -1,0 +1,31 @@
+{
+  "name": "co.edu.usbcali.mmdb",
+  "version": "1.0.0",
+  "description": "Multimedia Database 2019-I Project",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "livereload": "browser-sync start --server --files *",
+    "instalar": "npm i"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pabhoz/MMDB.git"
+  },
+  "keywords": [
+    "mmdb",
+    "histograms",
+    "image",
+    "audio",
+    "video"
+  ],
+  "author": "Pabhoz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pabhoz/MMDB/issues"
+  },
+  "homepage": "https://github.com/pabhoz/MMDB#readme",
+  "dependencies": {
+    "chart.js": "^2.7.3"
+  }
+}
